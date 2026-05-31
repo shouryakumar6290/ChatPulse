@@ -67,37 +67,9 @@ whatsapp-analyzer/
 
 ---
 
-## 🚀 How to Run the Project Locally in Chrome
-
-Since ChatPulse is a pure client-side application, running it requires **zero installation**!
-
-1. Copy the absolute file path below:
-   ```text
-   file:///C:/Users/KIIT/.gemini/antigravity/scratch/whatsapp-analyzer/index.html
-   ```
-2. Paste it into the URL bar of your **Google Chrome** browser and press Enter.
-3. Drag & drop your exported WhatsApp `.txt` file, or click **"Try with Demo Group Chat"**!
-
----
-
-## 🌐 Free 1-Click Deployment Guide
-
-Because ChatPulse does not require backend servers or databases, you can host it online for free in seconds!
-
-### Option A: Netlify Drop (Takes 20 seconds)
-1. Open your browser and navigate to [Netlify Drop](https://app.netlify.com/drop).
-2. Locate your project folder on your computer: `C:\Users\KIIT\.gemini\antigravity\scratch\whatsapp-analyzer`.
-3. Drag the entire `whatsapp-analyzer` folder and drop it into the Netlify browser window.
-4. **Netlify will instantly host the application and give you a shareable `https://...` link!**
-
-### Option B: Vercel (Takes 30 seconds)
-1. Go to [Vercel](https://vercel.com/) and sign up or log in.
-2. Drag and drop the `whatsapp-analyzer` folder into Vercel’s upload dashboard.
-3. Vercel will deploy the site and provide a free public domain name.
-
----
-
 ## 🔒 Privacy & Security Blueprint
 * **Browser Sandbox**: The JavaScript `FileReader` API accesses file streams directly from your operating system into browser RAM.
 * **No Server Footprint**: No external HTTP APIs, REST endpoints, or server-side sockets are active.
 * **Offline Readiness**: All charts, styles, and word cloud compilations function 100% offline once the page has loaded.
+
+Built with ❤️ by Shourya Kumar
