@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatPulse | Premium WhatsApp Chat Analyzer</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono for code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ApexCharts for state-of-the-art interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+    <!-- Canvas Confetti for parse celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Custom Premium Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- Main App Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar collapsed" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-bolt-lightning text-gradient"></i>
+                    </div>
+                    <span class="logo-text">Chat<span class="text-gradient">Pulse</span></span>
+                </div>
+                <button class="toggle-sidebar-btn" id="toggle-sidebar" title="Toggle Sidebar">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="upload" title="Upload Chat">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="nav-text">Upload Chat</span>
+                </button>
+                <button class="nav-item disabled" data-tab="overview" id="nav-overview" title="Dashboard Overview">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span class="nav-text">Overview</span>
+                </button>
+                <button class="nav-item disabled" data-tab="timeline" id="nav-timeline" title="Timeline Analysis">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span class="nav-text">Activity Timeline</span>
+                </button>
+                <button class="nav-item disabled" data-tab="engagement" id="nav-engagement" title="Sender Engagement">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <span class="nav-text">Engagement</span>
+                </button>
+                <button class="nav-item disabled" data-tab="sentiment" id="nav-sentiment" title="Sentiment & Emojis">
+                    <i class="fa-solid fa-face-smile-wink"></i>
+                    <span class="nav-text">Mood & Emojis</span>
+                </button>
+                <button class="nav-item disabled" data-tab="wordcloud" id="nav-wordcloud" title="Word Cloud">
+                    <i class="fa-solid fa-cloud"></i>
+                    <span class="nav-text">Word Cloud</span>
+                </button>
+                <button class="nav-item disabled" data-tab="explorer" id="nav-explorer" title="Chat Explorer">
+                    <i class="fa-solid fa-comments"></i>
+                    <span class="nav-text">Chat Explorer</span>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="privacy-badge">
+                    <i class="fa-solid fa-shield-halved text-success"></i>
+                    <span class="privacy-text">100% Private & Local</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            
+            <!-- Global Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h1 class="page-title" id="page-title">Analyzer Setup</h1>
+                </div>
+                <div class="top-bar-right">
+                    <div class="chat-info-pill hidden" id="chat-info-pill">
+                        <span class="badge" id="chat-type-badge">Group</span>
+                        <span class="pill-text" id="chat-filename">chat.txt</span>
+                        <button class="reset-chat-btn" id="reset-chat" title="Upload New Chat">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                    <div class="theme-badge">
+                        <i class="fa-solid fa-moon"></i>
+                        <span>Glassmorphic Dark</span>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- App Pages Container -->
+            <div class="pages-container">
+                
+                <!-- PAGE 1: UPLOAD & SETUP -->
+                <section class="app-page active" id="page-upload">
+                    <div class="upload-grid">
+                        
+                        <!-- File Upload Card -->
+                        <div class="glass-card upload-card animate-fade-in">
+                            <div class="card-glow"></div>
+                            <div class="upload-area" id="drop-zone">
+                                <input type="file" id="file-input" accept=".txt" class="hidden-input">
+                                <div class="upload-icon-container">
+                                    <i class="fa-solid fa-folder-open upload-icon"></i>
+                                </div>
+                                <h2>Drag & Drop exported WhatsApp chat</h2>
+                                <p class="upload-subtitle">Only <b>.txt</b> files are supported</p>
+                                
+                                <div class="or-divider">
+                                    <span>OR</span>
+                                </div>
+                                
+                                <button class="btn btn-primary" id="browse-btn">
+                                    <i class="fa-solid fa-file-import"></i> Browse Files
+                                </button>
+                                
+                                <div class="demo-chat-trigger mt-5">
+                                    <p class="demo-subtitle">Don't have a chat file ready?</p>
+                                    <button class="btn btn-secondary btn-glow" id="demo-btn">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Try with Demo Group Chat
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guide / Info Card -->
+                        <div class="glass-card guide-card animate-fade-in delay-1">
+                            <div class="guide-header">
+                                <i class="fa-solid fa-circle-info text-gradient-indigo"></i>
+                                <h2>How to Export Chats</h2>
+                            </div>
+                            
+                            <div class="accordion">
+                                <div class="accordion-item">
+                                    <button class="accordion-trigger">
+                                        <span><i class="fa-brands fa-android text-success mr-2"></i> Export from Android</span>
+                                        <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                                    </button>
+                                    <div class="accordion-content">
+                                        <ol>
+                                            <li>Open the individual or group chat you wish to analyze in WhatsApp.</li>
+                                            <li>Tap the <b>three vertical dots (Menu)</b> in the top right corner.</li>
+                                            <li>Select <b>More</b>, then tap <b>Export Chat</b>.</li>
+                                            <li>Choose <b>Without Media</b> (recommended for faster parsing).</li>
+                                            <li>Save the generated <b>.txt</b> file to your device and upload it here.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                
+                                <div class="accordion-item">
+                                    <button class="accordion-trigger">
+                                        <span><i class="fa-brands fa-apple text-gradient-pink mr-2"></i> Export from iOS (iPhone)</span>
+                                        <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                                    </button>
+                                    <div class="accordion-content">
+                                        <ol>
+                                            <li>Open the chat or group inside WhatsApp on your iPhone.</li>
+                                            <li>Tap on the **contact name or group subject** at the top of the screen.</li>
+                                            <li>Scroll down to the bottom and tap **Export Chat**.</li>
+                                            <li>Select **Without Media** in the popup menu.</li>
+                                            <li>Select **Save to Files** or share it, then upload the `.txt` here.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                                
+                                <div class="accordion-item active">
+                                    <button class="accordion-trigger">
+                                        <span><i class="fa-solid fa-lock text-cyan mr-2"></i> Absolute Data Privacy</span>
+                                        <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                                    </button>
+                                    <div class="accordion-content">
+                                        <p><b>ChatPulse operates with 100% in-browser parsing.</b></p>
+                                        <p>Your WhatsApp chats are processed directly inside your browser memory using JavaScript's local <code>FileReader</code>. No files, logs, or chat contents are uploaded to any server, databases, or API endpoints. Your personal conversations remain fully confidential, secure, and private.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PAGE 2: DASHBOARD OVERVIEW -->
+                <section class="app-page" id="page-overview">
+                    <!-- Key Stats Metrics Row -->
+                    <div class="metrics-grid animate-fade-in">
+                        <div class="glass-card metric-card">
+                            <div class="metric-icon bg-indigo"><i class="fa-solid fa-message"></i></div>
+                            <div class="metric-data">
+                                <h3 class="count-up" id="stat-messages">0</h3>
+                                <p>Total Messages</p>
+                            </div>
+                        </div>
+                        <div class="glass-card metric-card">
+                            <div class="metric-icon bg-cyan"><i class="fa-solid fa-font"></i></div>
+                            <div class="metric-data">
+                                <h3 class="count-up" id="stat-words">0</h3>
+                                <p>Total Words</p>
+                            </div>
+                        </div>
+                        <div class="glass-card metric-card">
+                            <div class="metric-icon bg-pink"><i class="fa-solid fa-photo-film"></i></div>
+                            <div class="metric-data">
+                                <h3 class="count-up" id="stat-media">0</h3>
+                                <p>Media Files Omitted</p>
+                            </div>
+                        </div>
+                        <div class="glass-card metric-card">
+                            <div class="metric-icon bg-orange"><i class="fa-solid fa-link"></i></div>
+                            <div class="metric-data">
+                                <h3 class="count-up" id="stat-links">0</h3>
+                                <p>Links Shared</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-3x1 mt-6 animate-fade-in delay-1">
+                        <!-- Chat Metadata Info Card -->
+                        <div class="glass-card chat-summary-card">
+                            <h2><i class="fa-solid fa-circle-nodes text-gradient-indigo mr-2"></i> Conversation Summary</h2>
+                            <div class="summary-details mt-4">
+                                <div class="detail-row">
+                                    <span class="detail-label">Active Timeframe</span>
+                                    <span class="detail-value" id="summary-dates">-</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Total Duration</span>
+                                    <span class="detail-value" id="summary-duration">-</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Total Active Days</span>
+                                    <span class="detail-value" id="summary-active-days">-</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Total Senders</span>
+                                    <span class="detail-value" id="summary-senders-count">-</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Avg. Messages / Day</span>
+                                    <span class="detail-value text-glow-indigo" id="summary-avg-msg-day">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Radar Insight Card -->
+                        <div class="glass-card radar-insight-card">
+                            <h2><i class="fa-solid fa-bolt text-gradient-cyan mr-2"></i> Highlight Insights</h2>
+                            <div class="insight-list mt-4" id="highlight-insights-list">
+                                <!-- Dynamically filled by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Top Emojis Quick Card -->
+                        <div class="glass-card overview-emoji-card">
+                            <h2><i class="fa-solid fa-face-laugh-beam text-gradient-pink mr-2"></i> Most Used Emojis</h2>
+                            <div class="emoji-leaderboard-list mt-4" id="overview-emoji-list">
+                                <!-- Dynamic emoji progress bars -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PAGE 3: TIMELINE & PATTERNS -->
+                <section class="app-page" id="page-timeline">
+                    <!-- Monthly Trend -->
+                    <div class="glass-card large-chart-card animate-fade-in">
+                        <h2><i class="fa-solid fa-calendar-days text-gradient-indigo mr-2"></i> Monthly Message Volume</h2>
+                        <p class="card-subtitle">Chat activity and growth trend over months</p>
+                        <div class="chart-container" id="monthly-chart"></div>
+                    </div>
+                    
+                    <div class="grid-2x1 mt-6 animate-fade-in delay-1">
+                        <!-- Busiest Day of Week -->
+                        <div class="glass-card">
+                            <h2><i class="fa-solid fa-calendar-week text-gradient-pink mr-2"></i> Weekly Activity Pattern</h2>
+                            <p class="card-subtitle">Which day of the week is most active?</p>
+                            <div class="chart-container" id="weekly-chart"></div>
+                        </div>
+                        
+                        <!-- Time of Day Heatmap / Hour distribution -->
+                        <div class="glass-card">
+                            <h2><i class="fa-solid fa-clock text-gradient-cyan mr-2"></i> Hourly Distribution</h2>
+                            <p class="card-subtitle">What time of day are messages sent?</p>
+                            <div class="chart-container" id="hourly-chart"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PAGE 4: ENGAGEMENT -->
+                <section class="app-page" id="page-engagement">
+                    <div class="glass-card large-chart-card animate-fade-in">
+                        <h2><i class="fa-solid fa-crown text-gradient-indigo mr-2"></i> Chat Champions (Total Messages)</h2>
+                        <p class="card-subtitle">Ranked list of the most active senders</p>
+                        <div class="chart-container" id="champions-chart"></div>
+                    </div>
+                    
+                    <div class="grid-2x1 mt-6 animate-fade-in delay-1">
+                        <!-- Average Wordiness -->
+                        <div class="glass-card">
+                            <h2><i class="fa-solid fa-pen-nib text-gradient-pink mr-2"></i> Average Message Length</h2>
+                            <p class="card-subtitle">Who writes the longest paragraphs? (Words per message)</p>
+                            <div class="chart-container" id="wordiness-chart"></div>
+                        </div>
+                        
+                        <!-- Response Time / Ghoster list -->
+                        <div class="glass-card">
+                            <h2><i class="fa-solid fa-reply-all text-gradient-cyan mr-2"></i> Speed Demon vs The Ghoster</h2>
+                            <p class="card-subtitle">Average reply time and response profile</p>
+                            <div class="table-container mt-4">
+                                <table class="custom-table" id="response-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sender</th>
+                                            <th>Avg. Reply Speed</th>
+                                            <th>Response Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamically generated rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PAGE 5: SENTIMENT & EMOJIS -->
+                <section class="app-page" id="page-sentiment">
+                    <div class="grid-2x1 animate-fade-in">
+                        <!-- Chat Sentiment Ratio -->
+                        <div class="glass-card flex-center-card">
+                            <h2><i class="fa-solid fa-heart-pulse text-gradient-pink mr-2"></i> Chat Sentiment Analysis</h2>
+                            <p class="card-subtitle text-center">Emotional undertone of the conversations</p>
+                            <div class="donut-chart-wrapper">
+                                <div class="chart-container" id="sentiment-donut-chart"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sender Sentiment Rank -->
+                        <div class="glass-card">
+                            <h2><i class="fa-solid fa-face-smile text-gradient-indigo mr-2"></i> Sender Moodboard</h2>
+                            <p class="card-subtitle">Who is the most positive and who is the most cynical?</p>
+                            <div class="table-container mt-4">
+                                <table class="custom-table" id="sentiment-sender-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sender</th>
+                                            <th>Sentiment Score</th>
+                                            <th>Mood Badge</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card mt-6 animate-fade-in delay-1">
+                        <h2><i class="fa-solid fa-face-laugh-beam text-gradient-cyan mr-2"></i> Emoji Intelligence</h2>
+                        <p class="card-subtitle">Top emojis used in this conversation and their counts</p>
+                        
+                        <div class="emoji-grid-layout mt-5">
+                            <div class="emoji-stats-box">
+                                <div class="emoji-champ-card">
+                                    <div class="card-sub-header">Emoji Champion</div>
+                                    <h1 id="emoji-king-name" class="text-gradient">No one</h1>
+                                    <p id="emoji-king-stat">0 emojis sent</p>
+                                </div>
+                            </div>
+                            
+                            <div class="emoji-freq-list" id="emoji-frequency-container">
+                                <!-- Dynamic grid of emojis -->
+                            </div>
+
+                            <div class="emoji-leaderboard-box">
+                                <div class="card-sub-header">Emoji Frequency Leaderboard</div>
+                                <div class="emoji-leaderboard-list" id="emoji-leaderboard-list">
+                                    <!-- Dynamic progress bars -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PAGE 6: WORD CLOUD -->
+                <section class="app-page" id="page-wordcloud">
+                    <div class="glass-card large-chart-card animate-fade-in">
+                        <h2><i class="fa-solid fa-cloud text-gradient-indigo mr-2"></i> Vocabulary Word Cloud</h2>
+                        <p class="card-subtitle">Visual representation of the most frequently used words (standard stop-words excluded)</p>
+                        
+                        <div class="wordcloud-controls mt-4">
+                            <div class="control-group">
+                                <label for="cloud-word-count">Max Words:</label>
+                                <select id="cloud-word-count" class="custom-select">
+                                    <option value="50">50 Words</option>
+                                    <option value="100" selected>100 Words</option>
+                                    <option value="150">150 Words</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="cloud-sender-filter">Filter by Sender:</label>
+                                <select id="cloud-sender-filter" class="custom-select">
+                                    <option value="all">Everyone</option>
+                                    <!-- Dynamic senders options -->
+                                </select>
+                            </div>
+                            
+                            <button class="btn btn-secondary ml-3" id="regenerate-cloud-btn">
+                                <i class="fa-solid fa-arrows-rotate"></i> Regenerate
+                            </button>
+                        </div>
+                        
+                        <div class="wordcloud-wrapper mt-5">
+                            <div class="wordcloud-canvas-container">
+                                <canvas id="wordcloud-canvas" width="800" height="400"></canvas>
+                                <div id="wordcloud-tooltip" class="wc-tooltip"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PAGE 7: CHAT EXPLORER -->
+                <section class="app-page" id="page-explorer">
+                    <div class="explorer-layout animate-fade-in">
+                        
+                        <!-- Search & Filter Sidebar -->
+                        <div class="glass-card explorer-filters">
+                            <h2><i class="fa-solid fa-filter text-gradient-indigo mr-2"></i> Filter Messages</h2>
+                            
+                            <div class="filter-group mt-4">
+                                <label class="filter-label">Search Keyword</label>
+                                <div class="search-input-container">
+                                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                    <input type="text" id="explorer-search" class="custom-input" placeholder="Type to search...">
+                                </div>
+                            </div>
+                            
+                            <div class="filter-group mt-4">
+                                <label class="filter-label">Filter Sender</label>
+                                <select id="explorer-sender-filter" class="custom-select">
+                                    <option value="all">All Senders</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group mt-4">
+                                <label class="filter-label">Filter Sentiment</label>
+                                <select id="explorer-sentiment-filter" class="custom-select">
+                                    <option value="all">Any Sentiment</option>
+                                    <option value="positive">Positive Only</option>
+                                    <option value="neutral">Neutral Only</option>
+                                    <option value="negative">Negative Only</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-stats-badge mt-5">
+                                <div>Showing <span id="explorer-match-count" class="text-cyan font-bold">0</span> of <span id="explorer-total-count" class="font-bold">0</span> messages</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Simulated Chat Window -->
+                        <div class="glass-card chat-window-card">
+                            <div class="chat-header">
+                                <div class="avatar"><i class="fa-solid fa-users"></i></div>
+                                <div class="chat-header-info">
+                                    <h3 id="explorer-header-title">WhatsApp Chat</h3>
+                                    <p id="explorer-header-subtitle">Select filters on the left to browse</p>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-messages-container" id="chat-messages-view">
+                                <!-- Messages will render here dynamically -->
+                                <div class="empty-explorer-state">
+                                    <i class="fa-regular fa-comment-dots"></i>
+                                    <p>Select "Try with Demo Group Chat" or upload your own chat file to explore conversations here.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast-notification hidden" id="toast">
+        <i class="fa-solid fa-circle-check toast-icon text-success" id="toast-icon"></i>
+        <span class="toast-message" id="toast-message">File loaded successfully!</span>
+    </div>
+
+    <!-- Custom Premium App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
