@@ -492,15 +492,13 @@ It helps others discover the project and motivates future development.
 
 <div align="center">
 
-## ❤️ Built with Passion
+Built with ❤️ by Shourya Kumar
 
 ### **ChatPulse — Premium WhatsApp Chat Analyzer**
 
 Transform conversations into insights while keeping your privacy intact.
 
 **Designed & Developed by**
-
-# Shourya Kumar
 
 *"Every conversation tells a story. ChatPulse helps you visualize it."*
 
